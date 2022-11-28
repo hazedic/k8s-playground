@@ -107,6 +107,17 @@
         path: /tmp/containerd_config.toml
         state: absent
 
+    - name: Create cri config file
+      ansible.builtin.copy:
+        dest: /etc/crictl.yaml
+        content: |
+          runtime-endpoint: "unix:///var/run/containerd/containerd.sock"
+          image-endpoint: ""
+          timeout: 0
+          debug: false
+          pull-image-on-create: false
+          disable-pull-on-run: false
+
     - name: Check sysctl kubernetes file
       ansible.builtin.stat: path=/etc/sysctl.d/99-kubernetes-cri.conf
       register: check_sysctl_conf
